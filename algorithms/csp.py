@@ -108,7 +108,7 @@ def ac3(csp, domains):
     queue = deque((x, y) for x in csp.variables for y in csp.neighbors[x])
     while queue:
         x, y = queue.popleft()
-        if revise(csp, domains, x, y):
+        if revise(csp, x, y, domains):
             if not domains[x]:
                 return False            ##No solucion
             for z in csp.neighbors[x]:
