@@ -33,5 +33,32 @@ def build_rules():
       la conjunción; las variables de la regla se interpretan universalmente.
     """
     # TODO: Add your code here
-    raise NotImplementedError
+    r1 = Rule('R1', 'Un técnico asignado y habilitado en la especialidad requerida es competente.',
+              (atom('Asignado', '?t', '?p'),
+               atom('Requiere', '?t', '?e'),
+               atom('Habilitado', '?p', '?e')),
+              atom('Competente', '?p', '?t'))
+    r2 = Rule('R2', 'Una tarea está preparada si su zona tiene aislamiento y ausencia de alerta confirmados en la franja.',
+              (atom('EnZona', '?t', '?z'),
+               atom('AislamientoConfirmado', '?z', '?f'),
+               atom('SinAlertaConfirmada', '?z', '?f')),
+              atom('Preparada', '?t', '?f'))
+    r3 = Rule('R3', 'Una tarea programada se autoriza si su técnico está disponible y es competente, y la tarea está preparada.',
+              (atom('Programada', '?t', '?f'),
+               atom('Asignado', '?t', '?p'),
+               atom('Disponible', '?p', '?f'),
+               atom('Competente', '?p', '?t'),
+               atom('Preparada', '?t', '?f')),
+              atom('Autorizada', '?t', '?f'))
+    r4 = Rule('R4', 'Una tarea programada se bloquea si su zona tiene una alerta en la franja.',
+              (atom('Programada', '?t', '?f'),
+               atom('EnZona', '?t', '?z'),
+               atom('Alerta', '?z', '?f')),
+              atom('Bloqueada', '?t', '?f'))
+    r5 = Rule('R5', 'Una tarea programada se bloquea si falló el aislamiento de su zona en la franja.',
+              (atom('Programada', '?t', '?f'),
+               atom('EnZona', '?t', '?z'),
+               atom('AislamientoFallido', '?z', '?f')),
+              atom('Bloqueada', '?t', '?f'))
+    return (r1, r2, r3, r4, r5)
     # FIN DEL BLOQUE DEL ESTUDIANTE
