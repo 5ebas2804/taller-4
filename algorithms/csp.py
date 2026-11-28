@@ -127,7 +127,34 @@ def select_unassigned_variable(csp, assignment, domains):
       original para los desempates.
     """
     # TODO: Add your code here
-    raise NotImplementedError
+    menor_mrv = 99999999999999
+    mejor_grado = 0
+    mejor_variable = None
+    vars = csp.variables
+    for x in vars:
+        if x in assignment:
+            continue
+        mrv = 0
+        grado = 0
+        valores = domains[x]
+        vecinos = csp.neighbors[x]
+        for v in valores:
+            if csp.consistent(x, v, assignment):
+                mrv += 1
+        for y in vecinos:
+            if y not in assignment:
+                grado += 1
+        
+        if mrv < menor_mrv or (mrv == menor_mrv and grado > mejor_grado):
+            menor_mrv = mrv
+            mejor_grado = grado
+            mejor_variable = x
+            
+    return mejor_variable
+            
+        
+        
+    
     # FIN DEL BLOQUE DEL ESTUDIANTE
 
 
@@ -145,5 +172,27 @@ def order_domain_values(csp, variable, assignment, domains):
       sin modificar los dominios.
     """
     # TODO: Add your code here
-    raise NotImplementedError
+    valores = domains[variable]
+    vecinos = csp.neighbors[variable]
+    candidatos = {}
+    for v in valores:
+        if not csp.consistent(variable, v, assignment):
+            continue
+        pasan = 0 
+        for y in vecinos:
+            if y in assignment:
+                continue
+            vals_vecino = domains[y]
+            for vv in vals_vecino:
+                if csp.consistent(y, vv, assignment) and not csp.compatible(variable, v, y, vv):
+                    pasan += 1
+        candidatos[v] = pasan
+        
+    ordenados = sorted(candidatos, key=candidatos.get)
+    return ordenados
+              
+        
+            
+            
+    
     # FIN DEL BLOQUE DEL ESTUDIANTE
